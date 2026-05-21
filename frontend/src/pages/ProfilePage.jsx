@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import api from '../api';
+import api, { resolveMediaUrl } from '../api';
 import { useAuth } from '../context/AuthContext';
 
 export default function ProfilePage() {
@@ -48,7 +48,7 @@ export default function ProfilePage() {
       <div className="flex items-start gap-12 mb-10 pb-6 border-b border-gray-200">
         <div className="flex-shrink-0">
           {profile.avatar
-            ? <img src={profile.avatar} alt="" className="w-24 h-24 rounded-full object-cover" />
+            ? <img src={resolveMediaUrl(profile.avatar)} alt="" className="w-24 h-24 rounded-full object-cover" />
             : <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white text-3xl font-bold">{profile.username?.[0]?.toUpperCase()}</div>
           }
         </div>
@@ -86,7 +86,7 @@ export default function ProfilePage() {
       <div className="grid grid-cols-3 gap-1">
         {profile.posts?.map(p => (
           <Link key={p.id} to={`/post/${p.id}`}>
-            <img src={p.image_url} alt="" className="w-full aspect-square object-cover hover:opacity-90 transition-opacity" />
+            <img src={resolveMediaUrl(p.image_url)} alt="" className="w-full aspect-square object-cover hover:opacity-90 transition-opacity" />
           </Link>
         ))}
       </div>

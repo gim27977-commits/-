@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import api from '../api';
+import api, { resolveMediaUrl } from '../api';
 import { useAuth } from '../context/AuthContext';
 
 export default function PostPage() {
@@ -38,12 +38,12 @@ export default function PostPage() {
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden flex max-h-[80vh]">
-      <img src={post.image_url} alt="" className="w-1/2 object-cover" />
+      <img src={resolveMediaUrl(post.image_url)} alt="" className="w-1/2 object-cover" />
       <div className="w-1/2 flex flex-col">
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
           <Link to={`/profile/${post.author?.username}`} className="flex items-center gap-2">
             {post.author?.avatar
-              ? <img src={post.author.avatar} alt="" className="w-8 h-8 rounded-full object-cover" />
+              ? <img src={resolveMediaUrl(post.author.avatar)} alt="" className="w-8 h-8 rounded-full object-cover" />
               : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white text-xs font-bold">{post.author?.username?.[0]?.toUpperCase()}</div>
             }
             <span className="font-semibold text-sm">{post.author?.username}</span>

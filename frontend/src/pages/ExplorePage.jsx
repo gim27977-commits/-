@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../api';
+import api, { resolveMediaUrl } from '../api';
 
 export default function ExplorePage() {
   const [posts, setPosts] = useState([]);
@@ -18,7 +18,7 @@ export default function ExplorePage() {
       <div className="grid grid-cols-3 gap-1">
         {posts.map(p => (
           <Link key={p.id} to={`/post/${p.id}`}>
-            <img src={p.image_url} alt="" className="w-full aspect-square object-cover hover:opacity-90 transition-opacity" />
+            <img src={resolveMediaUrl(p.image_url)} alt="" className="w-full aspect-square object-cover hover:opacity-90 transition-opacity" />
           </Link>
         ))}
       </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../api';
+import api, { resolveMediaUrl } from '../api';
 import { useAuth } from '../context/AuthContext';
 
 export default function PostCard({ post, onDelete }) {
@@ -49,7 +49,7 @@ export default function PostCard({ post, onDelete }) {
       <div className="flex items-center justify-between px-4 py-3">
         <Link to={`/profile/${post.author?.username}`} className="flex items-center gap-2">
           {post.author?.avatar
-            ? <img src={post.author.avatar} alt="" className="w-8 h-8 rounded-full object-cover" />
+            ? <img src={resolveMediaUrl(post.author.avatar)} alt="" className="w-8 h-8 rounded-full object-cover" />
             : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white text-xs font-bold">{post.author?.username?.[0]?.toUpperCase()}</div>
           }
           <span className="font-semibold text-sm">{post.author?.username}</span>
@@ -60,7 +60,7 @@ export default function PostCard({ post, onDelete }) {
       </div>
 
       <Link to={`/post/${post.id}`}>
-        <img src={post.image_url} alt="" className="w-full object-cover max-h-[600px]" />
+        <img src={resolveMediaUrl(post.image_url)} alt="" className="w-full object-cover max-h-[600px]" />
       </Link>
 
       <div className="px-4 py-3">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import api from '../api';
+import api, { resolveMediaUrl } from '../api';
 
 export default function SearchPage() {
   const [searchParams] = useSearchParams();
@@ -18,7 +18,7 @@ export default function SearchPage() {
       {users.map(u => (
         <Link key={u.id} to={`/profile/${u.username}`} className="flex items-center gap-3 py-3 border-b border-gray-100 hover:bg-gray-50 px-2 rounded">
           {u.avatar
-            ? <img src={u.avatar} alt="" className="w-10 h-10 rounded-full object-cover" />
+            ? <img src={resolveMediaUrl(u.avatar)} alt="" className="w-10 h-10 rounded-full object-cover" />
             : <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white font-bold">{u.username?.[0]?.toUpperCase()}</div>
           }
           <div>

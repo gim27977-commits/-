@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { resolveMediaUrl } from '../api';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -38,7 +39,7 @@ export default function Navbar() {
           <Link to="/upload" className="hover:text-gray-500">게시</Link>
           <Link to={`/profile/${user?.username}`} className="hover:text-gray-500">
             {user?.avatar
-              ? <img src={user.avatar} alt="" className="w-7 h-7 rounded-full object-cover" />
+              ? <img src={resolveMediaUrl(user.avatar)} alt="" className="w-7 h-7 rounded-full object-cover" />
               : <div className="w-7 h-7 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white text-xs font-bold">{user?.username?.[0]?.toUpperCase()}</div>
             }
           </Link>

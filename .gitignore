@@ -3,4 +3,17 @@ dist/
 *.db
 uploads/
 .env
+.env.production
+.env.local
 .DS_Store
+
+# Android
+frontend/android/.gradle/
+frontend/android/app/build/
+frontend/android/build/
+frontend/android/local.properties
+frontend/android/key.properties
+*.keystore
+*.jks
+*.aab
+*.apk
