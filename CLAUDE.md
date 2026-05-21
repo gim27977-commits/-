@@ -4,11 +4,11 @@ This file provides guidance to AI assistants (Claude Code and others) working in
 
 ## Repository Status
 
-This repository is newly initialized and currently empty. This CLAUDE.md establishes the conventions and workflows to follow as the codebase grows.
+This repository is in early initialization. The only committed file so far is this CLAUDE.md. The conventions below apply as the codebase grows.
 
-## Development Branch
-
-All development happens on feature branches. The current working branch is `claude/add-claude-documentation-HBc3L`. Never push directly to `main` without explicit user approval.
+- **Repository**: `gim27977-commits/-`
+- **Current working branch**: `claude/add-claude-documentation-6Y0Pc`
+- **Branches**: feature branches only; `main` is the protected base branch
 
 ## Git Workflow
 
@@ -18,6 +18,23 @@ All development happens on feature branches. The current working branch is `clau
 - Do not amend published commits; create new commits instead
 - Never force-push to `main` or `master`
 - Never skip hooks (`--no-verify`) unless the user explicitly requests it
+
+### Commit Message Format
+
+Use a HEREDOC to pass commit messages to avoid shell escaping issues:
+
+```bash
+git commit -m "$(cat <<'EOF'
+Short imperative summary (50 chars max)
+
+Optional longer explanation of why, not what.
+EOF
+)"
+```
+
+### Pull Requests
+
+Do not create a pull request unless the user explicitly asks for one.
 
 ## Code Style Conventions
 
@@ -54,23 +71,6 @@ Before taking any of these actions, explain what you're about to do and ask the 
 - Modifying CI/CD pipelines
 - Pushing to shared or protected branches
 - Sending messages or comments to external services (GitHub issues, Slack, email)
-
-### Commit Messages
-
-Use a HEREDOC to pass commit messages to avoid shell escaping issues:
-
-```bash
-git commit -m "$(cat <<'EOF'
-Short imperative summary (50 chars max)
-
-Optional longer explanation of why, not what.
-EOF
-)"
-```
-
-### Pull Requests
-
-Do not create a pull request unless the user explicitly asks for one.
 
 ## Project Setup (To Be Updated)
 
