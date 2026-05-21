@@ -1,104 +1,104 @@
 # CLAUDE.md
 
-This file provides guidance to AI assistants (Claude Code and others) working in this repository.
+이 파일은 이 저장소에서 작업하는 AI 어시스턴트(Claude Code 등)를 위한 안내 문서입니다.
 
-## Repository Status
+## 저장소 현황
 
-This repository is in early initialization. The only committed file so far is this CLAUDE.md. The conventions below apply as the codebase grows.
+이 저장소는 초기 설정 단계에 있습니다. 현재 커밋된 파일은 이 CLAUDE.md가 유일합니다. 아래 규칙들은 코드베이스가 성장함에 따라 적용됩니다.
 
-- **Repository**: `gim27977-commits/-`
-- **Current working branch**: `claude/add-claude-documentation-6Y0Pc`
-- **Branches**: feature branches only; `main` is the protected base branch
+- **저장소**: `gim27977-commits/-`
+- **현재 작업 브랜치**: `claude/add-claude-documentation-6Y0Pc`
+- **브랜치 정책**: 피처 브랜치만 사용; `main`은 보호된 기본 브랜치
 
-## Git Workflow
+## Git 워크플로우
 
-- Create feature branches from `main` using descriptive names (e.g., `feat/user-auth`, `fix/login-bug`)
-- Write clear, concise commit messages in the imperative mood ("Add feature" not "Added feature")
-- Always commit before pushing; always push with `git push -u origin <branch-name>`
-- Do not amend published commits; create new commits instead
-- Never force-push to `main` or `master`
-- Never skip hooks (`--no-verify`) unless the user explicitly requests it
+- `main`에서 설명적인 이름의 피처 브랜치를 생성합니다 (예: `feat/user-auth`, `fix/login-bug`)
+- 커밋 메시지는 명령형으로 명확하고 간결하게 작성합니다 ("Add feature", "Added feature" 아님)
+- 항상 커밋 후 푸시하며, `git push -u origin <브랜치명>` 형식으로 푸시합니다
+- 공개된 커밋은 수정하지 않으며, 새 커밋을 생성합니다
+- `main` 또는 `master`에 강제 푸시하지 않습니다
+- 사용자가 명시적으로 요청하지 않는 한 훅을 건너뛰지(`--no-verify`) 않습니다
 
-### Commit Message Format
+### 커밋 메시지 형식
 
-Use a HEREDOC to pass commit messages to avoid shell escaping issues:
+셸 이스케이프 문제를 피하기 위해 HEREDOC을 사용합니다:
 
 ```bash
 git commit -m "$(cat <<'EOF'
-Short imperative summary (50 chars max)
+짧은 명령형 요약 (50자 이내)
 
-Optional longer explanation of why, not what.
+선택적으로 무엇이 아닌 왜에 대한 설명을 추가합니다.
 EOF
 )"
 ```
 
-### Pull Requests
+### 풀 리퀘스트
 
-Do not create a pull request unless the user explicitly asks for one.
+사용자가 명시적으로 요청하지 않는 한 풀 리퀘스트를 생성하지 않습니다.
 
-## Code Style Conventions
+## 코드 스타일 규칙
 
-- Prefer editing existing files over creating new ones
-- Do not add comments unless the "why" is non-obvious (hidden constraints, workarounds, subtle invariants)
-- Never write multi-paragraph docstrings or multi-line comment blocks
-- Do not add error handling, fallbacks, or validation for scenarios that cannot happen
-- Do not introduce abstractions beyond what the current task requires
-- No feature flags or backwards-compatibility shims unless explicitly needed
+- 새 파일 생성보다 기존 파일 수정을 우선합니다
+- "왜"가 명확하지 않은 경우(숨겨진 제약, 회피책, 미묘한 불변 조건)에만 주석을 추가합니다
+- 여러 단락의 독스트링이나 여러 줄 주석 블록을 작성하지 않습니다
+- 발생할 수 없는 시나리오에 대한 오류 처리, 폴백, 유효성 검사를 추가하지 않습니다
+- 현재 작업에서 요구되는 수준을 넘는 추상화를 도입하지 않습니다
+- 명시적으로 필요하지 않은 한 피처 플래그나 하위 호환성 심(shim)을 사용하지 않습니다
 
-## Security
+## 보안
 
-- Never commit secrets, credentials, API keys, or `.env` files
-- Validate only at system boundaries (user input, external APIs); trust internal code
-- Avoid OWASP Top 10 vulnerabilities: SQL injection, XSS, command injection, etc.
-- If insecure code is written accidentally, fix it immediately before moving on
+- 시크릿, 자격증명, API 키, `.env` 파일을 커밋하지 않습니다
+- 시스템 경계(사용자 입력, 외부 API)에서만 유효성을 검사하고, 내부 코드는 신뢰합니다
+- OWASP Top 10 취약점(SQL 인젝션, XSS, 커맨드 인젝션 등)을 피합니다
+- 실수로 안전하지 않은 코드를 작성한 경우, 계속 진행하기 전에 즉시 수정합니다
 
-## AI Assistant Guidance
+## AI 어시스턴트 가이드
 
-### General Principles
+### 기본 원칙
 
-- Read files before editing them
-- Run independent tool calls in parallel where possible
-- For exploratory questions, respond with a 2–3 sentence recommendation plus the main trade-off; do not implement until the user agrees
-- Match the scope of changes to what was actually requested; do not gold-plate
+- 파일을 수정하기 전에 반드시 읽습니다
+- 가능한 경우 독립적인 도구 호출을 병렬로 실행합니다
+- 탐색적 질문에는 권장 사항과 주요 트레이드오프를 2~3문장으로 답하며, 사용자 동의 전에 구현하지 않습니다
+- 변경 범위를 실제 요청된 것에 맞춥니다; 과도하게 개선하지 않습니다
 
-### Risky Actions — Always Confirm First
+### 위험한 작업 — 항상 먼저 확인
 
-Before taking any of these actions, explain what you're about to do and ask the user to confirm:
+다음 작업을 수행하기 전에 무엇을 할 것인지 설명하고 사용자 확인을 구합니다:
 
-- Deleting files or branches
-- Force-pushing
+- 파일 또는 브랜치 삭제
+- 강제 푸시
 - `git reset --hard`
-- Modifying CI/CD pipelines
-- Pushing to shared or protected branches
-- Sending messages or comments to external services (GitHub issues, Slack, email)
+- CI/CD 파이프라인 수정
+- 공유 또는 보호된 브랜치에 푸시
+- 외부 서비스(GitHub 이슈, Slack, 이메일)에 메시지 또는 댓글 전송
 
-## Project Setup (To Be Updated)
+## 프로젝트 설정 (업데이트 필요)
 
-As the project takes shape, update this section with:
+프로젝트가 구체화되면 다음 내용으로 이 섹션을 업데이트합니다:
 
-- **Language / Runtime**: e.g., Node 20, Python 3.12, Go 1.22
-- **Package manager**: e.g., `npm`, `pnpm`, `uv`, `cargo`
-- **Install dependencies**: e.g., `npm install`
-- **Run tests**: e.g., `npm test`
-- **Lint / format**: e.g., `npm run lint`, `ruff check .`
-- **Start dev server**: e.g., `npm run dev`
-- **Build for production**: e.g., `npm run build`
+- **언어 / 런타임**: 예) Node 20, Python 3.12, Go 1.22
+- **패키지 매니저**: 예) `npm`, `pnpm`, `uv`, `cargo`
+- **의존성 설치**: 예) `npm install`
+- **테스트 실행**: 예) `npm test`
+- **린트 / 포맷**: 예) `npm run lint`, `ruff check .`
+- **개발 서버 시작**: 예) `npm run dev`
+- **프로덕션 빌드**: 예) `npm run build`
 
-## Directory Structure (To Be Updated)
+## 디렉토리 구조 (업데이트 필요)
 
-Document the top-level layout here once files are added:
+파일이 추가되면 최상위 레이아웃을 여기에 문서화합니다:
 
 ```
 /
-├── src/          # Application source code
-├── tests/        # Test files
-├── docs/         # Documentation
-└── CLAUDE.md     # This file
+├── src/          # 애플리케이션 소스 코드
+├── tests/        # 테스트 파일
+├── docs/         # 문서
+└── CLAUDE.md     # 이 파일
 ```
 
-## Testing Conventions (To Be Updated)
+## 테스트 규칙 (업데이트 필요)
 
-- Describe the test framework (Jest, pytest, Go test, etc.)
-- Explain how to run a single test vs. the full suite
-- Note any test data or fixtures setup required
-- Specify coverage thresholds if any
+- 테스트 프레임워크(Jest, pytest, Go test 등)를 설명합니다
+- 단일 테스트와 전체 테스트 스위트 실행 방법을 설명합니다
+- 필요한 테스트 데이터 또는 픽스처 설정을 명시합니다
+- 커버리지 임계값이 있는 경우 지정합니다
