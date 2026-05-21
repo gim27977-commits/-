@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Instaclone</string>
-    <string name="title_activity_main">Instaclone</string>
-    <string name="package_name">com.instaclone.app</string>
-    <string name="custom_url_scheme">com.instaclone.app</string>
+    <string name="app_name">Momento</string>
+    <string name="title_activity_main">Momento</string>
+    <string name="package_name">com.momento.app</string>
+    <string name="custom_url_scheme">com.momento.app</string>
 </resources>

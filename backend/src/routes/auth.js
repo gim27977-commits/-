@@ -56,6 +56,12 @@ router.get('/me', authMiddleware, (req, res) => {
   res.json(user);
 });
 
+router.delete('/account', authMiddleware, (req, res) => {
+  const result = db.prepare('DELETE FROM users WHERE id = ?').run(req.userId);
+  if (result.changes === 0) return res.status(404).json({ error: '사용자를 찾을 수 없습니다' });
+  res.json({ success: true });
+});
+
 router.put('/profile', authMiddleware, (req, res) => {
   const { bio, avatar } = req.body;
   db.prepare('UPDATE users SET bio = ?, avatar = ? WHERE id = ?').run(bio || '', avatar || '', req.userId);

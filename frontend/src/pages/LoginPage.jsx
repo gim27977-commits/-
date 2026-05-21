@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Logo from '../components/Logo';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -21,7 +22,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-xs">
         <div className="bg-white border border-gray-200 rounded-lg p-8 mb-3">
-          <h1 className="text-4xl font-bold italic text-center mb-8">Instaclone</h1>
+          <div className="text-center mb-8"><Logo className="text-5xl" /></div>
           {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
           <form onSubmit={submit} className="space-y-2">
             <input className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-gray-50 outline-none focus:border-gray-400" placeholder="이메일" type="email" value={form.email} onChange={e => setForm(p => ({...p, email: e.target.value}))} required />

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Logo from '../components/Logo';
 
 export default function RegisterPage() {
   const { register } = useAuth();
@@ -21,7 +22,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-xs">
         <div className="bg-white border border-gray-200 rounded-lg p-8 mb-3">
-          <h1 className="text-4xl font-bold italic text-center mb-4">Instaclone</h1>
+          <div className="text-center mb-4"><Logo className="text-5xl" /></div>
           <p className="text-gray-400 text-sm text-center mb-6">친구들의 사진과 영상을 보려면 가입하세요.</p>
           {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
           <form onSubmit={submit} className="space-y-2">

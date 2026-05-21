@@ -1,6 +1,6 @@
 {
-  "appId": "com.instaclone.app",
-  "appName": "Instaclone",
+  "appId": "com.momento.app",
+  "appName": "Momento",
   "webDir": "dist",
   "server": {
     "androidScheme": "https"

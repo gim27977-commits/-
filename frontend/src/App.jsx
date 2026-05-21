@@ -9,6 +9,8 @@ import ProfilePage from './pages/ProfilePage';
 import PostPage from './pages/PostPage';
 import UploadPage from './pages/UploadPage';
 import SearchPage from './pages/SearchPage';
+import SettingsPage from './pages/SettingsPage';
+import PrivacyPage from './pages/PrivacyPage';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
@@ -44,6 +46,8 @@ export default function App() {
           <Route path="/profile/:username" element={<PrivateRoute><Layout><ProfilePage /></Layout></PrivateRoute>} />
           <Route path="/post/:id" element={<PrivateRoute><Layout><PostPage /></Layout></PrivateRoute>} />
           <Route path="/search" element={<PrivateRoute><Layout><SearchPage /></Layout></PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute><Layout><SettingsPage /></Layout></PrivateRoute>} />
+          <Route path="/privacy" element={<div className="min-h-screen bg-gray-50 py-8 px-4"><PrivacyPage /></div>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

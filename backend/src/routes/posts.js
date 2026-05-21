@@ -1,21 +1,14 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db/database');
 const { authMiddleware } = require('../middleware/auth');
+const { uploadImage } = require('../services/upload');
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: path.join(__dirname, '../../uploads'),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, uuidv4() + ext);
-  },
-});
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) cb(null, true);
@@ -48,14 +41,18 @@ router.get('/explore', authMiddleware, (req, res) => {
   res.json(posts.map(p => enrichPost(p, req.userId)));
 });
 
-router.post('/', authMiddleware, upload.single('image'), (req, res) => {
+router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '이미지를 업로드해주세요' });
   const { caption } = req.body;
   const id = uuidv4();
-  const imageUrl = `/uploads/${req.file.filename}`;
-  db.prepare('INSERT INTO posts (id, user_id, image_url, caption) VALUES (?, ?, ?, ?)').run(id, req.userId, imageUrl, caption || '');
-  const post = db.prepare('SELECT * FROM posts WHERE id = ?').get(id);
-  res.status(201).json(enrichPost(post, req.userId));
+  try {
+    const imageUrl = await uploadImage(req.file.buffer, req.file.originalname);
+    db.prepare('INSERT INTO posts (id, user_id, image_url, caption) VALUES (?, ?, ?, ?)').run(id, req.userId, imageUrl, caption || '');
+    const post = db.prepare('SELECT * FROM posts WHERE id = ?').get(id);
+    res.status(201).json(enrichPost(post, req.userId));
+  } catch (err) {
+    res.status(500).json({ error: '이미지 업로드 실패' });
+  }
 });
 
 router.get('/:id', authMiddleware, (req, res) => {

@@ -4,6 +4,17 @@ const { authMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 
+router.get('/suggestions', authMiddleware, (req, res) => {
+  const users = db.prepare(`
+    SELECT id, username, avatar FROM users
+    WHERE id != ?
+      AND id NOT IN (SELECT following_id FROM follows WHERE follower_id = ?)
+    ORDER BY created_at DESC
+    LIMIT 10
+  `).all(req.userId, req.userId);
+  res.json(users);
+});
+
 router.get('/search', authMiddleware, (req, res) => {
   const { q } = req.query;
   if (!q) return res.json([]);
