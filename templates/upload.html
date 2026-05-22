@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}사진 올리기 - InstaClone{% endblock %}
+{% block content %}
+
+<div class="upload-box">
+  <div class="page-title"><i class="fas fa-plus-square"></i> 새 게시물</div>
+
+  <form method="POST" enctype="multipart/form-data" id="upload-form">
+    <!-- 이미지 선택 영역 -->
+    <div class="upload-area" onclick="document.getElementById('image-input').click()">
+      <i class="fas fa-images"></i>
+      <p>클릭해서 사진 선택하기</p>
+      <p style="font-size:12px; color:#bbb; margin-top:6px;">JPG, PNG, GIF (최대 16MB)</p>
+    </div>
+
+    <img id="preview-image" src="" alt="미리보기">
+
+    <input type="file" id="image-input" name="image" accept="image/*" style="display:none" required>
+
+    <div class="form-group" style="margin-top: 16px;">
+      <label class="upload-label">문구 입력</label>
+      <textarea class="upload-textarea" name="caption" placeholder="문구를 입력하세요... (선택사항)"></textarea>
+    </div>
+
+    <button class="btn btn-primary" type="submit">공유하기</button>
+  </form>
+</div>
+
+<script>
+const input = document.getElementById('image-input');
+const preview = document.getElementById('preview-image');
+const uploadArea = document.querySelector('.upload-area');
+
+input.addEventListener('change', function() {
+  if (this.files && this.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      uploadArea.style.display = 'none';
+    };
+    reader.readAsDataURL(this.files[0]);
+  }
+});
+</script>
+
+{% endblock %}

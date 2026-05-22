@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}탐색 - InstaClone{% endblock %}
+{% block content %}
+
+<div class="page-title"><i class="fas fa-compass"></i> 탐색</div>
+
+{% if posts %}
+<div class="explore-grid">
+  {% for post in posts %}
+  <div class="grid-item">
+    <img src="{{ url_for('static', filename='uploads/' + post.image_file) }}" alt="게시물">
+    <div class="grid-overlay">
+      <span><i class="fas fa-heart"></i> {{ post.like_count() }}</span>
+      <span><i class="fas fa-comment"></i> {{ post.comments.count() }}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <i class="fas fa-compass"></i>
+  <h3>아직 게시물이 없어요</h3>
+  <p>첫 번째 게시물을 올려보세요!</p>
+</div>
+{% endif %}
+
+{% endblock %}

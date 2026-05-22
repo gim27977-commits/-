@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}검색 - InstaClone{% endblock %}
+{% block content %}
+
+<div class="search-box">
+  <div class="page-title"><i class="fas fa-search"></i> 사용자 검색</div>
+
+  <form method="GET" action="{{ url_for('search') }}">
+    <div class="search-input-wrap">
+      <i class="fas fa-search search-icon"></i>
+      <input class="search-input" type="text" name="q" value="{{ q }}"
+             placeholder="사용자 이름 검색..." autofocus>
+    </div>
+    <button class="btn btn-primary" type="submit" style="width:100%; margin-bottom:16px;">검색</button>
+  </form>
+
+  {% if q %}
+    {% if users %}
+      {% for user in users %}
+      <div class="user-item">
+        <a href="{{ url_for('profile', username=user.username) }}">
+          <img src="{{ url_for('static', filename='uploads/' + user.profile_image) }}"
+               onerror="this.src='https://ui-avatars.com/api/?name={{ user.username }}&background=e1306c&color=fff&size=44'"
+               alt="{{ user.username }}">
+        </a>
+        <div>
+          <a href="{{ url_for('profile', username=user.username) }}" class="user-item-name">
+            {{ user.username }}
+          </a>
+          <div style="font-size:12px; color:#8e8e8e;">{{ user.bio or '소개 없음' }}</div>
+        </div>
+        {% if user != current_user %}
+        <div class="user-item-action">
+          <button class="follow-btn {% if current_user.is_following(user) %}following{% endif %}"
+                  data-username="{{ user.username }}" style="font-size:13px; padding:6px 14px;">
+            {{ '팔로잉' if current_user.is_following(user) else '팔로우' }}
+          </button>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-state" style="padding:30px 0;">
+        <i class="fas fa-user-slash" style="font-size:36px;"></i>
+        <p>"{{ q }}"에 해당하는 사용자가 없습니다.</p>
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="empty-state" style="padding:30px 0;">
+      <i class="fas fa-search" style="font-size:36px;"></i>
+      <p>찾고 싶은 사용자 이름을 입력하세요.</p>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}
