@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}로그인 - InstaClone{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-box">
+    <div class="auth-logo"><i class="fa-brands fa-instagram"></i><br>InstaClone</div>
+    <p class="auth-subtitle">친구들의 사진과 동영상을 보려면 로그인하세요.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}{% for c, m in messages %}<div class="alert alert-{{ c }}">{{ m }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+
+    <form method="POST">
+      <div class="form-group">
+        <input class="form-control" type="text" name="username" placeholder="사용자 이름" required autofocus>
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="password" name="password" placeholder="비밀번호" required>
+      </div>
+      <button class="btn btn-primary" type="submit">로그인</button>
+    </form>
+
+    <div class="auth-switch">
+      계정이 없으신가요? <a href="{{ url_for('register') }}">가입하기</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

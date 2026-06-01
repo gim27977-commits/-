@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}홈 - InstaClone{% endblock %}
+{% block content %}
+
+{% if posts %}
+  {% for post in posts %}
+  <div class="post-card">
+    <!-- 게시물 헤더 -->
+    <div class="post-header">
+      <a href="{{ url_for('profile', username=post.author.username) }}">
+        <img class="post-avatar"
+             src="{{ url_for('static', filename='uploads/' + post.author.profile_image) }}"
+             onerror="this.src='https://ui-avatars.com/api/?name={{ post.author.username }}&background=e1306c&color=fff&size=38'"
+             alt="{{ post.author.username }}">
+      </a>
+      <a href="{{ url_for('profile', username=post.author.username) }}" class="post-username">
+        {{ post.author.username }}
+      </a>
+      <span class="post-time">{{ post.created_at.strftime('%m월 %d일') }}</span>
+    </div>
+
+    <!-- 이미지 -->
+    <img class="post-image"
+         src="{{ url_for('static', filename='uploads/' + post.image_file) }}"
+         alt="게시물 이미지">
+
+    <!-- 액션 버튼 -->
+    <div class="post-actions">
+      <button class="action-btn like-btn" data-post-id="{{ post.id }}">
+        {% if post.is_liked_by(current_user) %}
+          <i class="fas fa-heart" style="color:#e1306c"></i>
+        {% else %}
+          <i class="far fa-heart"></i>
+        {% endif %}
+      </button>
+      <span style="font-size:14px; color:#8e8e8e;">
+        <span class="like-count">{{ post.like_count() }}</span>개
+      </span>
+    </div>
+
+    <!-- 좋아요 수 -->
+    {% if post.like_count() > 0 %}
+    <div class="post-likes">좋아요 <span class="like-count">{{ post.like_count() }}</span>개</div>
+    {% endif %}
+
+    <!-- 캡션 -->
+    {% if post.caption %}
+    <div class="post-caption">
+      <span class="username">{{ post.author.username }}</span>{{ post.caption }}
+    </div>
+    {% endif %}
+
+    <!-- 댓글 목록 -->
+    <div class="comments-section">
+      {% for c in post.comments.order_by('created_at').limit(3) %}
+      <div class="comment">
+        <a href="{{ url_for('profile', username=c.author.username) }}" class="username">{{ c.author.username }}</a>
+        <span>{{ c.body }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- 댓글 입력 -->
+    <form class="comment-form" method="POST" action="{{ url_for('comment', post_id=post.id) }}">
+      <input class="comment-input" type="text" name="body" placeholder="댓글 달기..." required>
+      <button class="comment-submit" type="submit">게시</button>
+    </form>
+  </div>
+  {% endfor %}
+
+{% else %}
+  <div class="empty-state">
+    <i class="far fa-image"></i>
+    <h3>아직 게시물이 없어요</h3>
+    <p>사람들을 팔로우하거나 직접 사진을 올려보세요!</p>
+    <br>
+    <a href="{{ url_for('upload') }}" class="btn btn-primary" style="width:auto; display:inline-block;">
+      첫 사진 올리기
+    </a>
+  </div>
+{% endif %}
+
+{% endblock %}

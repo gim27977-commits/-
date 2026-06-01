@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}InstaClone{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% if current_user.is_authenticated %}
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="{{ url_for('index') }}">
+      <i class="fa-brands fa-instagram"></i> InstaClone
+    </a>
+    <div class="nav-links">
+      <a href="{{ url_for('index') }}" title="홈"><i class="fas fa-home"></i></a>
+      <a href="{{ url_for('explore') }}" title="탐색"><i class="fas fa-compass"></i></a>
+      <a href="{{ url_for('upload') }}" title="업로드"><i class="fas fa-plus-square"></i></a>
+      <a href="{{ url_for('search') }}" title="검색"><i class="fas fa-search"></i></a>
+      <a href="{{ url_for('profile', username=current_user.username) }}" title="프로필">
+        <img class="nav-avatar"
+             src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}"
+             onerror="this.src='https://ui-avatars.com/api/?name={{ current_user.username }}&background=e1306c&color=fff&size=32'"
+             alt="프로필">
+      </a>
+      <a href="{{ url_for('logout') }}" title="로그아웃"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
+  </div>
+</nav>
+{% endif %}
+
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</div>
+
+<script>
+// 좋아요 버튼
+document.querySelectorAll('.like-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const postId = this.dataset.postId;
+    fetch('/like/' + postId, { method: 'POST', headers: { 'X-CSRFToken': '' } })
+      .then(r => r.json())
+      .then(data => {
+        const icon = this.querySelector('i');
+        const count = this.closest('.post-actions').querySelector('.like-count');
+        icon.className = data.liked ? 'fas fa-heart' : 'far fa-heart';
+        icon.style.color = data.liked ? '#e1306c' : '';
+        if (count) count.textContent = data.count;
+      });
+  });
+});
+
+// 팔로우 버튼
+document.querySelectorAll('.follow-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const username = this.dataset.username;
+    fetch('/follow/' + username, { method: 'POST' })
+      .then(r => r.json())
+      .then(data => {
+        this.textContent = data.following ? '팔로잉' : '팔로우';
+        this.classList.toggle('following', data.following);
+        const fc = document.querySelector('.followers-count');
+        if (fc) fc.textContent = data.followers_count;
+      });
+  });
+});
+</script>
+</body>
+</html>
